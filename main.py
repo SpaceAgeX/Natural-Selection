@@ -27,7 +27,7 @@ def main():
     running = True
     food = Food(WIDTH, HEIGHT, screen)
     Cell.cells.clear()
-    for _ in range(10):
+    for _ in range(Cell.CELL_AMOUNT):
         Cell(WIDTH, HEIGHT, screen, 100, 1)
 
     while running:
