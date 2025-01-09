@@ -26,8 +26,9 @@ font = pygame.font.Font(None, 24)
 def main():
     running = True
     food = Food(WIDTH, HEIGHT, screen)
-    for x in range(Cell.amount):
-        Cell(WIDTH, HEIGHT, 10, screen)
+    Cell.cells.clear()
+    for _ in range(10):
+        Cell(WIDTH, HEIGHT, screen, 100, 1)
 
     while running:
         screen.fill(BLACK)
@@ -35,10 +36,10 @@ def main():
         pygame.draw.circle(screen, WHITE, (WIDTH // 2, HEIGHT // 2), HEIGHT // 2 - 50, 1)
 
         food.draw()
-        
-        for x in Cell.cells:
-            x.draw()
-            #x.find_food_within_radius(food.foods)
+
+        for cell in Cell.cells:
+            cell.move_to_closest_food(food.foods)
+            cell.draw()
 
         clock.tick(FPS)
 
@@ -50,8 +51,8 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     food.generate()
-                    for x in Cell.cells:
-                        x.x, x.y = x.spawn_on_circle()
+                    for cell in Cell.cells:
+                        cell.x, cell.y = cell.spawn_on_circle()
             if event.type == pygame.QUIT:
                 running = False
 

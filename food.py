@@ -8,6 +8,7 @@ class Food:
         self.height = height
         self.screen = screen
         self.food_amount = 50
+        self.speed = 5
         self.foods = []
         self.generate()
 
@@ -20,6 +21,7 @@ class Food:
                 if (x - self.width // 2)**2 + (y - self.height // 2)**2 <= (self.height // 2 - 70)**2:
                     self.foods.append((x, y))
                     break
+    
 
     def draw(self):
         for food in self.foods:
