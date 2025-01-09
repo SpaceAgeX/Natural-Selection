@@ -3,6 +3,9 @@ import math
 import pygame
 import time
 
+
+
+
 class Cell:
     cells = []
     CELL_AMOUNT = 20
@@ -71,4 +74,7 @@ class Cell:
                 foods.remove(closest_food)
 
     def draw(self):
+        
+ 
         pygame.draw.circle(self.screen, self.color, (int(self.x), int(self.y)), 8)
+        
