@@ -8,7 +8,7 @@ class Cell:
     cells = []
     CELL_AMOUNT = 20
 
-    def __init__(self, width, height, screen, radius, speed):
+    def __init__(self, width, height, screen, radius, speed, strength):
         self.width = width
         self.height = height
         self.screen = screen
@@ -16,6 +16,7 @@ class Cell:
 
         self.radius = radius
         self.speed = speed
+        self.strength = strength
 
         self.foodEaten = 0
         
@@ -39,8 +40,14 @@ class Cell:
                 distance = math.sqrt((self.x - cell.x)**2 + (self.y - cell.y)**2)
                 if distance < 16:  # 16 = 2 * cell radius
                     angle = math.atan2(self.y - cell.y, self.x - cell.x)
-                    self.x += math.cos(angle) * (16 - distance) / 2
-                    self.y += math.sin(angle) * (16 - distance) / 2
+                    push_factor_self = self.strength / (self.strength + cell.strength)
+                    push_factor_other = cell.strength / (self.strength + cell.strength)
+                    
+                    self.x += math.cos(angle) * (16 - distance) * push_factor_other
+                    self.y += math.sin(angle) * (16 - distance) * push_factor_other
+                    
+                    cell.x -= math.cos(angle) * (16 - distance) * push_factor_self
+                    cell.y -= math.sin(angle) * (16 - distance) * push_factor_self
 
     def spawn_on_circle(self):
         while True:
@@ -90,7 +97,6 @@ class Cell:
             dx = closest_food[0] - self.x
             dy = closest_food[1] - self.y
             distance = math.sqrt(dx**2 + dy**2)
-            print(distance)
             if distance > 8:
                 new_x = self.x + (dx / distance) * self.speed
                 new_y = self.y + (dy / distance) * self.speed
@@ -99,7 +105,6 @@ class Cell:
                 else:
                     self.angle = random.uniform(0, 2 * math.pi)  # Adjust angle if stuck
             else:
-                
                 self.foodEaten += 1
                 foods.remove(closest_food)  # Only remove if the cell reaches the food
 

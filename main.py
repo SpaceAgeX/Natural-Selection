@@ -38,7 +38,7 @@ def main():
 
     Cell.cells.clear()
     for _ in range(Cell.CELL_AMOUNT):
-        Cell(WIDTH, HEIGHT, screen, 100, 1)
+        Cell(WIDTH, HEIGHT, screen, 100, 1, 1)
 
     dayTime = 20
     currentTime = time.time()
