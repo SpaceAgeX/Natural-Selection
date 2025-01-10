@@ -40,7 +40,7 @@ def main():
     for _ in range(Cell.CELL_AMOUNT):
         Cell(WIDTH, HEIGHT, screen, 100, 1)
 
-    dayTime = 10
+    dayTime = 20
     currentTime = time.time()
     while running:
         screen.fill(BLACK)
