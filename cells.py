@@ -97,7 +97,7 @@ class Cell:
             dx = closest_food[0] - self.x
             dy = closest_food[1] - self.y
             distance = math.sqrt(dx**2 + dy**2)
-            if distance > 8:
+            if distance > 1:
                 new_x = self.x + (dx / distance) * self.speed
                 new_y = self.y + (dy / distance) * self.speed
                 if not self.is_overlapping(new_x, new_y):
@@ -110,5 +110,8 @@ class Cell:
 
         self.resolve_overlap()  # Ensure cells adjust if too close to others
 
-    def draw(self):
+    def draw(self, font):
         pygame.draw.circle(self.screen, self.color, (int(self.x), int(self.y)), 8)
+        #text = font.render(f"{self.foodEaten}", True, (255, 255, 255))
+        #self.screen.blit(text, (self.x, self.y))
+

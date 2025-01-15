@@ -7,7 +7,7 @@ class Food:
         self.width = width
         self.height = height
         self.screen = screen
-        self.food_amount = 100
+        self.food_amount = 5
         self.speed = 5
         self.foods = []
         self.generate()
