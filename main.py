@@ -1,6 +1,7 @@
 # main.py
 import pygame
 import time
+import random
 from food import Food
 from cells import Cell
 
@@ -32,14 +33,17 @@ def new_day():
             died.append(cell)
         else:
             if cell.foodEaten > 1:
-                for x in range(cell.foodEaten - 2):
-                    born.append(Cell(WIDTH, HEIGHT, screen, 100, 1, 1))
+                for x in range(int(cell.foodEaten - cell.toReproduce)):
+                    if random.randint(0, 100) < 20:
+                        born.append(Cell(WIDTH, HEIGHT, screen, (cell.radius/100)+random.uniform(-0.25, 0.25), cell.speed+random.uniform(-0.25, 0.25), cell.strength + random.uniform(-0.25, 0.25)))
+                    else:
+                        born.append(Cell(WIDTH, HEIGHT, screen, (cell.radius/100), cell.speed, cell.strength))
             cell.foodEaten = 0
 
     for cell in died:
         Cell.cells.remove(cell)
 
-    print(len(born))
+    
     for cell in born:
         Cell.cells.append(cell)
             
@@ -60,10 +64,14 @@ def main():
 
     Cell.cells.clear()
     for _ in range(Cell.CELL_AMOUNT):
-        Cell(WIDTH, HEIGHT, screen, 100, 1, 1)
+        Cell(WIDTH, HEIGHT, screen, 1, 1, 1)
 
     dayTime = 10
     currentTime = time.time()
+
+    averageSpeed = 0
+    averageStrength = 0
+    averageVis = 0
 
     while running:
         screen.fill(BLACK)
@@ -76,6 +84,14 @@ def main():
             cell.move_to_closest_food(food.foods)
             cell.draw(font)
 
+            averageSpeed += cell.speed
+            averageStrength += cell.strength
+            averageVis += cell.radius
+
+        averageSpeed /= len(Cell.cells)+1
+        averageStrength /= len(Cell.cells)+1
+        averageVis /= len(Cell.cells)+1
+
         clock.tick(FPS)
 
         fps = int(clock.get_fps())
@@ -86,6 +102,8 @@ def main():
             new_day()
             reset(food, dayTime)
             currentTime = time.time()
+            averageSpeed = 0
+            averageStrength = 0
             
             
 
@@ -95,7 +113,9 @@ def main():
         population_text = font.render(f"Population: {len(Cell.cells)}", True, WHITE)
         screen.blit(population_text, (WIDTH - population_text.get_width() - 10, 20 + population_text.get_height()))
 
-        
+        genes_text = font.render(f"Strength: {int(averageStrength*100)/100} | Speed: {int(averageSpeed*100)/100} | Vis: {int(averageVis)/100}", True, WHITE)
+        screen.blit(genes_text, (WIDTH - genes_text.get_width() - 10, 40 + genes_text.get_height()))
+        print(averageStrength, averageSpeed, averageVis)    
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:

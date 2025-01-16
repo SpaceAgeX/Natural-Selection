@@ -6,17 +6,21 @@ import time
 
 class Cell:
     cells = []
-    CELL_AMOUNT = 20
+    CELL_AMOUNT = 5
 
     def __init__(self, width, height, screen, radius, speed, strength):
         self.width = width
         self.height = height
         self.screen = screen
-        self.color = (0, 0, 255)
+        
 
-        self.radius = radius
+        self.radius = radius*100
         self.speed = speed
         self.strength = strength
+        self.toReproduce = self.speed + self.strength+(self.radius/100)
+        self.colorO = (0, 0, 255)
+        
+        self.color = self.colorO
 
         self.foodEaten = 0
         
@@ -91,7 +95,7 @@ class Cell:
             self.move_randomly()
             return
 
-        self.color = (0, 0, 255)
+        self.color = self.colorO
 
         if closest_food:
             dx = closest_food[0] - self.x
