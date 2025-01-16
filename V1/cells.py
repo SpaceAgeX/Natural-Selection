@@ -34,7 +34,7 @@ class Cell:
 
     def is_overlapping(self, x, y):
         for cell in Cell.cells:
-            if cell != self and math.sqrt((cell.x - x)**2 + (cell.y - y)**2) < 16:  # 16 = 2 * cell radius
+            if cell != self and math.sqrt((cell.x - x)**2 + (cell.y - y)**2) < 8:  # 16 = 2 * cell radius
                 return True
         return False
 
@@ -42,16 +42,16 @@ class Cell:
         for cell in Cell.cells:
             if cell != self:
                 distance = math.sqrt((self.x - cell.x)**2 + (self.y - cell.y)**2)
-                if distance < 16:  # 16 = 2 * cell radius
+                if distance < 8:  # 16 = 2 * cell radius
                     angle = math.atan2(self.y - cell.y, self.x - cell.x)
                     push_factor_self = self.strength / (self.strength + cell.strength)
                     push_factor_other = cell.strength / (self.strength + cell.strength)
                     
-                    self.x += math.cos(angle) * (16 - distance) * push_factor_other
-                    self.y += math.sin(angle) * (16 - distance) * push_factor_other
+                    self.x += math.cos(angle) * (8 - distance) * push_factor_other
+                    self.y += math.sin(angle) * (8 - distance) * push_factor_other
                     
-                    cell.x -= math.cos(angle) * (16 - distance) * push_factor_self
-                    cell.y -= math.sin(angle) * (16 - distance) * push_factor_self
+                    cell.x -= math.cos(angle) * (8 - distance) * push_factor_self
+                    cell.y -= math.sin(angle) * (8 - distance) * push_factor_self
 
     def spawn_on_circle(self):
         while True:
@@ -115,7 +115,7 @@ class Cell:
         self.resolve_overlap()  # Ensure cells adjust if too close to others
 
     def draw(self, font):
-        pygame.draw.circle(self.screen, self.color, (int(self.x), int(self.y)), 8)
+        pygame.draw.circle(self.screen, self.color, (int(self.x), int(self.y)), 4)
         #text = font.render(f"{self.foodEaten}", True, (255, 255, 255))
         #self.screen.blit(text, (self.x, self.y))
 
